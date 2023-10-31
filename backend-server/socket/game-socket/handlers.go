@@ -27,22 +27,22 @@ func HandleWSGame(data []byte, ws *websocket.Conn) {
 			switch trueData.Dir {
 			case "up":
 				{
-					LobbyPlayers[trueData.Name].Y -= 1
+					LobbyPlayers[trueData.Name].Y += 0.1
 					break
 				}
 			case "down":
 				{
-					LobbyPlayers[trueData.Name].Y += 1
+					LobbyPlayers[trueData.Name].Y -= 0.1
 					break
 				}
 			case "right":
 				{
-					LobbyPlayers[trueData.Name].X += 1
+					LobbyPlayers[trueData.Name].X += 0.1
 					break
 				}
 			case "left":
 				{
-					LobbyPlayers[trueData.Name].X -= 1
+					LobbyPlayers[trueData.Name].X -= 0.1
 					break
 				}
 			}

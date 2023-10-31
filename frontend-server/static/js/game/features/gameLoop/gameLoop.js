@@ -29,6 +29,5 @@ function updatePlayerPosition(players) {
 export function gameLoop(players = "") {
     updatePlayerPosition(players)
     updateServerPlayerPosition(players)
-
     window.requestAnimationFrame(getDataForNextLoop)
 }

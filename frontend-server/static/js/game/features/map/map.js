@@ -7,7 +7,7 @@ let path = "../../../../assets/map/"
 
 const map = []
 const all_type = []
-const all_case = []
+export const all_case = []
 const all_block = []
 
 class Type {
@@ -30,6 +30,8 @@ class Case {
         this.div.style.width = "6.5%"
         this.div.style.imageRendering = "pixelated";
         this.div.style.backgroundSize = "100% 100%"
+        this.brick = null
+        this.bomb = null // set to bomb if bomb pose on it
         container.appendChild(this.div)
     }
 }
@@ -46,6 +48,8 @@ class Block {
         this.div.style.width = "6.5%"
         this.div.style.imageRendering = "pixelated";
         this.div.style.backgroundSize = "100% 100%"
+        all_case[i].brick = this
+        this.break = false
         container.appendChild(this.div)
     }
 }

@@ -33,7 +33,7 @@ func SetUpGame(lobby map[string]*websocket.Conn) {
 
 	BroadcastToAll(toSend, lobby)
 
-	startPosition := [][]float64{{6.5, 73.5}, {84.5, 73.5}, {6.5, 8.5}, {84.5, 8.5}}
+	startPosition := [][]float64{{7, 73}, {84, 73}, {7, 8}, {84, 8}}
 	PlayerColors := []string{"#FF5733", "#33A2FF", "#33FF57", "#A633FF"}
 	playerID := 0
 	max := len(lobby)
@@ -41,16 +41,16 @@ func SetUpGame(lobby map[string]*websocket.Conn) {
 	for name, ws := range lobby {
 		infoCurrentPlayer := dataStruct.Player{
 			Name:     name,
-			Socket: ws,
+			Socket:   ws,
 			StartX:   startPosition[playerID][0],
 			StartY:   startPosition[playerID][1],
-			X:        0,
-			Y:        0,
+			X:        startPosition[playerID][0],
+			Y:        startPosition[playerID][1],
 			PlayerId: playerID + 1,
 			CurrentMove: &structures.Direction{
-				Up: false,
-				Down: false,
-				Left: false,
+				Up:    false,
+				Down:  false,
+				Left:  false,
 				Right: false,
 			},
 			Color: PlayerColors[playerID],

@@ -42,8 +42,8 @@ type Player struct {
 	Socket      *websocket.Conn `json:"socket"`
 	StartX      float64         `json:"startx"`
 	StartY      float64         `json:"starty"`
-	X           int             `json:"x"`
-	Y           int             `json:"y"`
+	X           float64         `json:"x"`
+	Y           float64         `json:"y"`
 	CurrentMove *Direction      `json:"currentmove"`
 	PlayerId    int             `json:"playerid"`
 	Color       string          `json:"color"`
