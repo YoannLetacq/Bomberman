@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -30,12 +31,17 @@ func new_brick_map(jsonMap Map_data) []string {
 		for _, b := range strings.Split(a, " ") {
 			if check(b, jsonMap.Type) {
 				if prok() {
-					app += "1 "
+					power := power_or_not()
+					if power > 2 {
+						app += "b "
+					} else {
+						app += strconv.Itoa(power) + " "
+					}
 				} else {
-					app += "0 "
+					app += "r "
 				}
 			} else {
-				app += "0 "
+				app += "r "
 			}
 		}
 		res = append(res, strings.TrimSuffix(app, " "))
@@ -61,5 +67,15 @@ func prok() bool {
 		return true
 	} else {
 		return false
+	}
+}
+
+func power_or_not() int {
+	rand.Seed(time.Now().UnixNano())
+	rand := rand.Intn(15)
+	if rand <= 2 {
+		return rand
+	} else {
+		return 7
 	}
 }

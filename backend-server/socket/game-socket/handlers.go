@@ -2,6 +2,7 @@ package game
 
 import (
 	"encoding/json"
+	"fmt"
 
 	dataStruct "backend/data"
 
@@ -27,22 +28,22 @@ func HandleWSGame(data []byte, ws *websocket.Conn) {
 			switch trueData.Dir {
 			case "up":
 				{
-					LobbyPlayers[trueData.Name].Y += 0.1
+					LobbyPlayers[trueData.Name].Y += LobbyPlayers[trueData.Name].PowerUps.Speed
 					break
 				}
 			case "down":
 				{
-					LobbyPlayers[trueData.Name].Y -= 0.1
+					LobbyPlayers[trueData.Name].Y -= LobbyPlayers[trueData.Name].PowerUps.Speed
 					break
 				}
 			case "right":
 				{
-					LobbyPlayers[trueData.Name].X += 0.1
+					LobbyPlayers[trueData.Name].X += LobbyPlayers[trueData.Name].PowerUps.Speed
 					break
 				}
 			case "left":
 				{
-					LobbyPlayers[trueData.Name].X -= 0.1
+					LobbyPlayers[trueData.Name].X -= LobbyPlayers[trueData.Name].PowerUps.Speed
 					break
 				}
 			}
@@ -103,8 +104,120 @@ func HandleWSGame(data []byte, ws *websocket.Conn) {
 			}
 			break
 		}
+	case "Power_up Taked":
+		{
+			var trueData dataStruct.Power_up_taked
+			json.Unmarshal(data, &trueData)
+			println(trueData.Value)
+			switch trueData.Value {
+			case 0:
+				{
+					if LobbyPlayers[trueData.Name].PowerUps.Speed < 0.3 {
+						LobbyPlayers[trueData.Name].PowerUps.Speed += 0.02
+					}
+					break
+				}
+			case 1:
+				{
+					LobbyPlayers[trueData.Name].PowerUps.Flame += 1
+					println(LobbyPlayers[trueData.Name].PowerUps.Flame)
+					println(trueData.Name)
+					break
+				}
+			case 2:
+				{
+					LobbyPlayers[trueData.Name].PowerUps.Bombs += 1
+					break
+				}
+			}
+			toSend, _ := json.Marshal(dataStruct.Power_up_taked{
+				Request: "destruct_power_up",
+				Name:    trueData.Name,
+				Value:   trueData.Value,
+				Pos:     trueData.Pos,
+			})
 
+			for _, player := range LobbyPlayers {
+				player.Socket.Write(toSend)
+			}
+			break
+		}
+	case "Posebomb":
+		{
+			var trueData dataStruct.Bomb
+			json.Unmarshal(data, &trueData)
+			toSend, err := json.Marshal(dataStruct.BombExplode{
+				Request: "bomb_pose_for_all",
+				Name:    trueData.Name,
+				Value:   trueData.Value,
+				Range:   LobbyPlayers[trueData.Name].PowerUps.Flame,
+			})
+
+			fmt.Println(err)
+
+			for _, player := range LobbyPlayers {
+				player.Socket.Write(toSend)
+			}
+			break
+		}
+
+	case "BombExplode":
+		{
+			var trueData dataStruct.BombExplode
+			json.Unmarshal(data, &trueData)
+			toSend, err := json.Marshal(dataStruct.BombExplode{
+				Request: "bomb_explode_for_all",
+				Name:    trueData.Name,
+				Value:   trueData.Value,
+				Range:   trueData.Range,
+			})
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			for _, player := range LobbyPlayers {
+				player.Socket.Write(toSend)
+			}
+			break
+
+		}
+	case "explosionCol":
+		{
+			var trueData dataStruct.ExplosionCol
+			json.Unmarshal(data, &trueData)
+			toSend, err := json.Marshal(dataStruct.ExplosionCol{
+				Request:  "explosion_col",
+				Username: trueData.Username,
+			})
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			for _, player := range LobbyPlayers {
+				player.Socket.Write(toSend)
+			}
+			break
+		}
+	case "BCPowerUp":
+		{
+			var trueData dataStruct.BCPowerUp
+			json.Unmarshal(data, &trueData)
+			toSend, err := json.Marshal(dataStruct.BCPowerUp{
+				Request:  "bc_power_up",
+				Type:     trueData.Type,
+				Position: trueData.Position,
+			})
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			for _, player := range LobbyPlayers {
+				player.Socket.Write(toSend)
+			}
+			break
+		}
 	}
+
 }
 
 func SendInfoForGame() {

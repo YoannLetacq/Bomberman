@@ -16,9 +16,21 @@ export let socket = new WebSocket("ws://"+ip+":1234/ws");  // Connexion WebSocke
 // Stockage des données utilisateur
 export let userData = {
     username: "",
+    speed: 0.1,
+    bomb_range: 2,
+    bomb_posable: 1,
+    life : 3,
+    recovery: false,
+    ignore_bomb:0,
     innerWidth: window.innerWidth,
     innerHeight: window.innerHeight
 };
+export let MapData = {
+    build: false,
+    map: [],
+    powerUpPlace: [],
+    
+}
 
 // ─── EVENT LISTENERS ───────────────────────────────────────────────────────────
 // Gestion des messages reçus via WebSocket

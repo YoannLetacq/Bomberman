@@ -55,9 +55,9 @@ func SetUpGame(lobby map[string]*websocket.Conn) {
 			},
 			Color: PlayerColors[playerID],
 			PowerUps: &dataStruct.PowerUps{
-				Bombs: false,
-				Flame: false,
-				Speed: false,
+				Bombs: 1,
+				Flame: 2,
+				Speed: 0.1,
 			},
 		}
 

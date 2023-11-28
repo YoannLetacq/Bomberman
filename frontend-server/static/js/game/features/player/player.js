@@ -11,7 +11,8 @@ class Player {
         this.div.style.bottom = "0%";
         this.div.style.backgroundColor = color;
         container.appendChild(this.div);
-        
+
+
         // Initialiser les attributs data-translateX et data-translateY à 0
         this.div.setAttribute('data-translateX', `0%`);
         this.div.setAttribute('data-translateY', `0%`);

@@ -5,11 +5,13 @@ import { gameLoop } from "./features/gameLoop/gameLoop.js";
 //import { movePlayer } from "./features/player/player.js";
 import { userData } from "../main.js";
 
+
 export var MapID = ""
 
 const app = document.getElementById("main-container")
 
 export function socketReceptionGame(data, ip) {
+    //console.log(data)
     switch (data["request"]){
         case "GoToGame": {
             MapID = data["mapid"]
@@ -29,6 +31,7 @@ export function socketReceptionGame(data, ip) {
         }
         case "MovePlayer": {
             movePlayer(data["name"], data["value"])
+            break
         }
         //case 
     }
